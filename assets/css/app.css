@@ -4,7 +4,7 @@ body {
 
 .main { margin-top: 20px; }
 .bg-dark { background-color: #2b90d9; }
-.btn-primary { background-color: #2b90d9; color: #d9e1e8; }
+.btn-primary { background-color: #2b90d9; color: #d9e1e8; min-width: 74px; }
 a.navbar-brand { color: #fff !important; }
 
 .cat { width: 128px; height: 128px; }
