@@ -32,7 +32,7 @@
 $(function() {
 
 	const baseurl = "https://mastodon.social/api/v1/";
-	const tag 	  = "mastocat";
+	const tag 	  = "unixporn";
 	var lastid    = null;
 	var cats      = [];	
 	var allow     = ['jpg', 'jpeg', 'gif', 'png'];
