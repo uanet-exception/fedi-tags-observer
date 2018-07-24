@@ -6,7 +6,7 @@ A partir de ese código creado por Kim, he hecho una pequeña modificación para
 Recopila las capturas de pantalla que se comparten en Mastodon con la etiqueta #unixporn y las muestra utilizando el servicio de GitLab Pages
 
 Puedes ver en acción la web en este enlace:
-* (victorhck.gitlab.io/unixporn/)[https://victorhck.gitlab.io/unixporn/]
+* https://victorhck.gitlab.io/unixporn/
 
 
 ## Licencia
