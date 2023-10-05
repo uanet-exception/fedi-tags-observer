@@ -2,11 +2,11 @@
  *
  * @source: http://www.masto.cat/assets/app.js
  *
- * @licstart  The following is the entire license notice for the 
+ * @licstart  The following is the entire license notice for the
  *  JavaScript code in this page.
  *
  * Copyright (C) 2018  Kim
- *
+ * Copyright (C) 2023  ZEN
  *
  * The JavaScript code in this page is free software: you can
  * redistribute it and/or modify it under the terms of the GNU
@@ -31,50 +31,93 @@
 
 $(function() {
 
-	const baseurl = "https://mastodon.social/api/v1/";
-	const tag 	  = "unixporn";
+  $.ajaxSetup({
+    headers: { 'Accept-Language': '' }
+  });
+
+	var tag       = null;
 	var lastid    = null;
-	var cats      = [];	
+	var cats      = [];
 	var allow     = ['jpg', 'jpeg', 'gif', 'png'];
-	var trigger   = $('.item');
 
-	function loadCats() {			
-		//get lastid from browser storage and remove
-		lastid = localStorage.getItem('mastocatId');
-		console.log(lastid);
-		//Download posts from the selected tag
-		$.getJSON(baseurl+"/timelines/tag/"+tag, {local: 0, only_media: 1, max_id: lastid, limit: 40}, function(result) {
-			jQuery('#loading').show();
-			$.each(result, function(i, data) {							   
-			    if(data.media_attachments.length) {
-			    	lastid = data.id;
-			    	cats.push(lastid);
-			    	//check is not repeated			    	
-			    	if($.inArray(lastid, cats) !== -1) {
-			    		//check image exists with its file extension
-			    		var filename = data.media_attachments[0].url;
-			    		var ext = filename.substring(filename.lastIndexOf('.')+1, filename.length);
-			    		if(allow.includes(ext)) {		    		
-			    			$('.gal').append('<div class="col-lg-3 col-md-4 col-xs-6"><div class="item d-block mb-4" style="background-image:url('+filename+');"><div class="desc text-center"><img src="'+data.account.avatar+'" class="rounded-circle" alt="'+data.account.display_name+'"><div class="name">'+data.account.display_name+'</div><a class="btn btn-primary" target="_blank" href="web+mastodon://follow?uri=acct:'+data.account.acct+'">Follow</a>&nbsp;<a class="btn btn-primary" data-lightbox="cats-'+data.id+'" data-title="'+tag+' by '+data.account.username+'" href="'+filename+'">Open</a><div class="counters"><ul><li>Toots<br>'+data.account.statuses_count+'</li><li>Followers<br>'+data.account.followers_count+'</li><li>Following<br>'+data.account.following_count+'</li></ul></div></div></div>');
-			    		}
-			    	}
-			    }
-			});
-			//console.log(lastid);
-			localStorage.setItem('mastocatId', lastid);
-			jQuery('#loading').hide();	
-		});
+	function loadPosts(tag, lastid = null) {
+    var data = $.ajax({
+      url: "https://mastodon.social/api/v1/timelines/tag/" + tag,
+      async: false,
+      data: {local: 0, only_media: 1, max_id: lastid, limit: 40}
+    }).responseJSON;
+    if (data === undefined) {
+      alert("Віддалений сервер повернув помилку. Спробуйте повторити спробу пізніше.");
+      return lastid;
+    }
+    let i = 0;
+    while (i < data.length) {
+      var item = data[i];
+      if(item.media_attachments.length) {
+        lastid = item.id;
+        cats.push(lastid);
+        //check is not repeated
+        if($.inArray(lastid, cats) !== -1) {
+          //check image exists with its file extension
+          var filename = item.media_attachments[0].url;
+          var ext = filename.substring(filename.lastIndexOf('.')+1, filename.length);
+          if(allow.includes(ext)) {
+            $('.gal').append('<div class="col-lg-3 col-md-4 col-xs-6"><div class="item d-block mb-4" style="background:rgb(117 190 218 / 0.1);background-image:url('+filename+');"><div class="desc text-center"><img src="'+item.account.avatar+'" class="rounded-circle" alt="'+item.account.display_name+'"><div class="name">'+item.account.display_name+'</div><a class="btn btn-primary" target="_blank" href="'+item.url+'">Допис</a>&nbsp;<a class="btn btn-primary" data-lightbox="cats-'+item.id+'" data-title="'+tag+' by '+item.account.username+'" href="'+filename+'">Перегляд</a><div class="counters"><ul><li>Дописів<br>'+item.account.statuses_count+'</li><li>Підписників<br>'+item.account.followers_count+'</li><li>Підписки<br>'+item.account.following_count+'</li></ul></div></div></div>');
+          }
+        }
+      }
+      i++;
+    }
+    return lastid;
 	}
-	
-	localStorage.removeItem('mastocatId');
-	loadCats();
-		
+
+
+  $('#tag').val(decodeURIComponent(window.location.hash.substr(1)));
+  tag = $('#tag').val().length >= 1  ? $('#tag').val() : $('#tag').val("Україна").val();
+  window.location.hash = tag;
+  history.replaceState( {} , 'tag', window.location );
+
+  jQuery('#loading').show();
+	lastid = loadPosts(tag, lastid);
+  jQuery('#loading').hide();
+
+  $('#tag').keyup(function(){
+    tag = $('#tag').val();
+    $('#submit').prop('disabled', tag.length < 1);
+    window.location.hash = tag;
+  // }).on("click", function(){
+  //   $('#tag').val('');
+  //   $('#submit').prop('disabled', $('#tag').val().length < 1);
+  }).on('keypress',function(e) {
+    if(e.which != 13) { return; }
+    if($('#tag').val().length < 1) { return; }
+    $('.gal').empty();
+
+    tag = $('#tag').val();
+    window.location.hash = tag;
+    cats = [];
+    jQuery('#loading').show();
+    lastid = loadPosts(tag, null);
+    jQuery('#loading').hide();
+  });
+
+  $('#submit').on('click', function(){
+    $('.gal').empty();
+    tag = $('#tag').val();
+    window.location.hash = tag;
+    cats = [];
+    jQuery('#loading').show();
+    lastid = loadPosts(tag, null);
+    jQuery('#loading').hide();
+  });
+
 	$(window).scroll(function () {
-   		if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
-   			console.log('bottom reached....');
-	  		loadCats();
-   		}
-	});
-
+  	if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
+  		// console.log('bottom reached....');
+      jQuery('#loading').show();
+	 		lastid = loadPosts(tag, lastid);
+      jQuery('#loading').hide();
+      // console.log(lastid);
+    }
+  });
 });
-
