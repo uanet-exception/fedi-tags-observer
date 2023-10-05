@@ -3,8 +3,7 @@
 Це програмне забезпечення є форком https://gitlab.com/victorhck/unixporn/.
 
 Ви можете переглянути роботу веб-сайту за цим посиланням:
-* https://victorhck.gitlab.io/unixporn/
-
+* https://uanet-exception.github.io/fedi-tags-observer/
 
 ## Ліцензія
 
