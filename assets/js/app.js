@@ -82,9 +82,7 @@ $(function() {
   jQuery('#loading').hide();
 
   $('#tag').keyup(function(){
-    tag = $('#tag').val();
-    $('#submit').prop('disabled', tag.length < 1);
-    window.location.hash = tag;
+    $('#submit').prop('disabled', $('#tag').val().length < 1);
   // }).on("click", function(){
   //   $('#tag').val('');
   //   $('#submit').prop('disabled', $('#tag').val().length < 1);
