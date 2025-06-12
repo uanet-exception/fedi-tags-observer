@@ -27,7 +27,7 @@
  *
 */
 
-//Response example : https://mstdn.social/api/v1/timelines/tag/mastocat
+//Response example : https://mastodon.social/api/v1/timelines/tag/mastocat
 
 $(function() {
 
@@ -48,7 +48,7 @@ $(function() {
 
 	function loadPosts(tag, lastid = null) {
     var data = $.ajax({
-      url: "https://mstdn.social/api/v1/timelines/tag/" + tag,
+      url: "https://mastodon.social/api/v1/timelines/tag/" + tag,
       async: false,
       data: {local: 0, only_media: 1, max_id: lastid, limit: 40}
     }).responseJSON;
