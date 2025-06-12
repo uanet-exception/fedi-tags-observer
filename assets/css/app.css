@@ -16,60 +16,60 @@ a.navbar-brand { color: #fff !important; }
 /*           Gallery            */
 /*-------------------------------*/
 
-.gal .item { 
-	position: relative; 
-	display: block; 
-	width: 100%; 
-	height: 300px !important; 
-	background-repeat:no-repeat;
-	background-position: center center;
-	background-size: cover;
+.gal .item {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 300px !important;
+  background-repeat:no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 
 div.desc {
-	display: none;
-	color: #9baec8;
+  display: none;
+  color: #9baec8;
 }
 
 div.desc img {
-	width: 100px;
-	height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
 div.desc img, div.name, div.note, div.desc a {
-	margin-top: 10px;
-	z-index: 2;
-    position: relative;
+  margin-top: 10px;
+  z-index: 2;
+  position: relative;
 }
 
 div.counters {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	left: 0;
-	background: #9baec8;
-	color: #282c37;
-	font-weight: bold;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  background: #9baec8;
+  color: #282c37;
+  font-weight: bold;
 }
 
-.desc ul { 
-	list-style: none; 
-	width: 10s0%;
-	text-align: center;
-	padding: 0; 
-	margin-top: 10px;
+.desc ul {
+  list-style: none;
+  width: 100%;
+  text-align: center;
+  padding: 0;
+  margin-top: 10px;
 }
 div.counters ul li { display: inline-block; width: 30%; }
 
 .item:hover .desc {
-    background-color: #282c37;
-    bottom: 0;
-    color: #d9e1e8;
-    left: 0;
-    position: absolute;
-	z-index: 1;
-    padding: 0 10px;
-    width: 100%;
-    height: 300px;
-    display: block;
+  background-color: #282c37;
+  top: 0;
+  color: #d9e1e8;
+  left: 0;
+  position: absolute;
+  z-index: 1;
+  padding: 0 10px;
+  width: 100%;
+  height: 100%;
+  display: block;
 }

@@ -46,6 +46,16 @@ $(function() {
 	var cats      = [];
 	var allow     = ['jpg', 'jpeg', 'gif', 'png'];
 
+  const rainbowHexColors = [
+    "#FF0000", // Red
+    "#FF7F00", // Orange
+    "#FFFF00", // Yellow
+    "#00FF00", // Green
+    "#0000FF", // Blue
+    "#4B0082", // Indigo
+    "#8B00FF"  // Violet
+  ];
+
 	function loadPosts(tag, lastid = null) {
     var data = $.ajax({
       url: "https://mastodon.social/api/v1/timelines/tag/" + tag,
@@ -58,6 +68,7 @@ $(function() {
     }
     let i = 0;
     while (i < data.length) {
+      const color = rainbowHexColors[i % rainbowHexColors.length];
       var item = data[i];
       if(item.media_attachments.length) {
         lastid = item.id;
@@ -69,7 +80,7 @@ $(function() {
             var filename = attachment.url;
             var ext = filename.substring(filename.lastIndexOf('.')+1, filename.length);
             if(allow.includes(ext)) {
-              $('.gal').append('<div class="col-lg-3 col-md-4 col-xs-6"><div class="item d-block mb-4" style="background-color:rgb(117 190 218 / 0.1);background-image:url('+filename+');"><div class="desc text-center"><img src="'+item.account.avatar+'" class="rounded-circle" alt="'+item.account.display_name+'"><div class="name">'+item.account.display_name+'</div><a class="btn btn-primary" target="_blank" href="'+item.url+'">Допис</a>&nbsp;<a class="btn btn-primary" data-lightbox="cats-'+item.id+'" data-title="'+tag+' by '+item.account.username+'" href="'+filename+'">Перегляд</a><div class="counters"><ul><li>Дописів<br>'+item.account.statuses_count+'</li><li>Підписників<br>'+item.account.followers_count+'</li><li>Підписки<br>'+item.account.following_count+'</li></ul></div></div></div>');
+              $('.gal').append('<div class="col-lg-3 col-md-4 col-xs-6"><div class="item d-block mb-4" style="border: '+(item.media_attachments.length > 1 ? 2 : 0)+'px solid '+color+'; background-color:rgb(117 190 218 / 0.1);background-image:url('+filename+');"><div class="desc text-center"><img src="'+item.account.avatar+'" class="rounded-circle" alt="'+item.account.display_name+'"><div class="name">'+item.account.display_name+'</div><a class="btn btn-primary" target="_blank" href="'+item.url+'">Допис</a>&nbsp;<a class="btn btn-primary" data-lightbox="cats-'+item.id+'" data-title="'+tag+' by '+item.account.username+'" href="'+filename+'">Перегляд</a><div class="counters"><ul><li>Дописів<br>'+item.account.statuses_count+'</li><li>Підписників<br>'+item.account.followers_count+'</li><li>Підписки<br>'+item.account.following_count+'</li></ul></div></div></div>');
             }
           }
         }
