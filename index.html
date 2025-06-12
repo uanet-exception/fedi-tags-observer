@@ -1,36 +1,30 @@
 <!DOCTYPE html>
 <html lang="uk">
-
   <head>
-
+    <title>#Федіверс</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
 
-   <title>#Федіверс</title>
-
     <!-- Bootstrap core CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="assets/css/app.css" rel="stylesheet">
     <link href="assets/css/lightbox.css" rel="stylesheet">
-
   </head>
 
-	<body>
+  <body>
+    <div id="loading">
+      <img id="loading-image" src="assets/img/loading.gif" alt="Loading..." />
+    </div>
 
-	<div id="loading">
-  		<img id="loading-image" src="assets/img/loading.gif" alt="Loading..." />
-	</div>
-
-	 <header>
+    <header>
       <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">
           <div class="row">
             <div class="col-sm-8 col-md-7 py-4">
               <h4 class="text-white">Інформація</h4>
               <p class="text-muted">
-                Ця сторінка завантажує медіафайли з інстансу mastodon.social за заданим хештегом. Використовуйте свою уяву, щоб знайти цікаві для вас дописи, або просто подивіться на котиків з Федіверсу за тегом <a href="#cats" target="_blank">#cats</a>.</p>
+                Ця сторінка завантажує медіафайли з інстансу mastodon.social за заданим хештегом. Використовуйте свою уяву, щоб знайти цікаві для вас дописи, або просто подивіться на котиків з Федіверсу за тегом <a href="?tag=cats" target="_blank">#cats</a>.</p>
               <img src="assets/img/cat_sleep.png" class="cat" alt="cat sleep">
             </div>
             <div class="col-sm-4 offset-md-1 py-4">
@@ -46,7 +40,7 @@
       <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container-fluid d-flex justify-content-between">
           <div class="navbar-brand d-flex align-items-center">
-            #&nbsp;<input type="text" id="tag" name="tag" required minlength="1" size="20" />
+            #&nbsp;<input type="text" id="tag" name="tag" required minlength="1" size="12" />
             &nbsp;<input type="submit" id="submit" value="Пошук" />
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,22 +50,18 @@
       </div>
     </header>
 
-	<!-- Page Content -->
-	<div class="container-fluid main">
-
-	  <div class="row text-center text-lg-left gal">
-
-	  </div>
-
-	</div>
-	<!-- /.container -->
+    <!-- Page Content -->
+    <div class="container-fluid main">
+      <div class="row text-center text-lg-left gal"></div>
+    </div>
+    <!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript -->
     <script
-	  src="https://code.jquery.com/jquery-3.3.1.min.js"
-	  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-	  crossorigin="anonymous"></script>
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="assets/js/lightbox.js"></script>
     <script src="assets/js/app.js"></script>

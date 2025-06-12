@@ -27,12 +27,18 @@
  *
 */
 
-//Response example : https://mastodon.social/api/v1/timelines/tag/mastocat
+//Response example : https://mstdn.social/api/v1/timelines/tag/mastocat
 
 $(function() {
 
   $.ajaxSetup({
     headers: { 'Accept-Language': '' }
+  });
+
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
   });
 
 	var tag       = null;
@@ -42,7 +48,7 @@ $(function() {
 
 	function loadPosts(tag, lastid = null) {
     var data = $.ajax({
-      url: "https://mastodon.social/api/v1/timelines/tag/" + tag,
+      url: "https://mstdn.social/api/v1/timelines/tag/" + tag,
       async: false,
       data: {local: 0, only_media: 1, max_id: lastid, limit: 40}
     }).responseJSON;
@@ -59,10 +65,12 @@ $(function() {
         //check is not repeated
         if($.inArray(lastid, cats) !== -1) {
           //check image exists with its file extension
-          var filename = item.media_attachments[0].url;
-          var ext = filename.substring(filename.lastIndexOf('.')+1, filename.length);
-          if(allow.includes(ext)) {
-            $('.gal').append('<div class="col-lg-3 col-md-4 col-xs-6"><div class="item d-block mb-4" style="background-color:rgb(117 190 218 / 0.1);background-image:url('+filename+');"><div class="desc text-center"><img src="'+item.account.avatar+'" class="rounded-circle" alt="'+item.account.display_name+'"><div class="name">'+item.account.display_name+'</div><a class="btn btn-primary" target="_blank" href="'+item.url+'">Допис</a>&nbsp;<a class="btn btn-primary" data-lightbox="cats-'+item.id+'" data-title="'+tag+' by '+item.account.username+'" href="'+filename+'">Перегляд</a><div class="counters"><ul><li>Дописів<br>'+item.account.statuses_count+'</li><li>Підписників<br>'+item.account.followers_count+'</li><li>Підписки<br>'+item.account.following_count+'</li></ul></div></div></div>');
+          for (const attachment of item.media_attachments.slice(0, 4)) {
+            var filename = attachment.url;
+            var ext = filename.substring(filename.lastIndexOf('.')+1, filename.length);
+            if(allow.includes(ext)) {
+              $('.gal').append('<div class="col-lg-3 col-md-4 col-xs-6"><div class="item d-block mb-4" style="background-color:rgb(117 190 218 / 0.1);background-image:url('+filename+');"><div class="desc text-center"><img src="'+item.account.avatar+'" class="rounded-circle" alt="'+item.account.display_name+'"><div class="name">'+item.account.display_name+'</div><a class="btn btn-primary" target="_blank" href="'+item.url+'">Допис</a>&nbsp;<a class="btn btn-primary" data-lightbox="cats-'+item.id+'" data-title="'+tag+' by '+item.account.username+'" href="'+filename+'">Перегляд</a><div class="counters"><ul><li>Дописів<br>'+item.account.statuses_count+'</li><li>Підписників<br>'+item.account.followers_count+'</li><li>Підписки<br>'+item.account.following_count+'</li></ul></div></div></div>');
+            }
           }
         }
       }
@@ -71,11 +79,16 @@ $(function() {
     return lastid;
 	}
 
+  const url = new URL(window.location.href);
+  const urlParams = new URLSearchParams(url.search);
 
-  $('#tag').val(decodeURIComponent(window.location.hash.substr(1)));
+  $('#tag').val(urlParams.get('tag'));
   tag = $('#tag').val().length >= 1  ? $('#tag').val() : $('#tag').val("Україна").val();
-  window.location.hash = tag;
-  history.replaceState( {} , 'tag', window.location );
+
+  urlParams.set('tag', tag);
+  url.search = urlParams.toString();
+  $(document).prop('title', '#' + tag + ' - Федіверс');
+  history.replaceState( {} , "", url );
 
   jQuery('#loading').show();
 	lastid = loadPosts(tag, lastid);
@@ -92,21 +105,37 @@ $(function() {
     $('.gal').empty();
 
     tag = $('#tag').val();
-    window.location.hash = tag;
-    cats = [];
-    jQuery('#loading').show();
-    lastid = loadPosts(tag, null);
-    jQuery('#loading').hide();
+
+    const url = new URL(window.location.href);
+    const urlParams = new URLSearchParams(url.search);
+
+    urlParams.set('tag', tag);
+    url.search = urlParams.toString();
+
+    window.location.assign(url);
+
+    // cats = [];
+    // jQuery('#loading').show();
+    // lastid = loadPosts(tag, null);
+    // jQuery('#loading').hide();
   });
 
   $('#submit').on('click', function(){
     $('.gal').empty();
     tag = $('#tag').val();
-    window.location.hash = tag;
-    cats = [];
-    jQuery('#loading').show();
-    lastid = loadPosts(tag, null);
-    jQuery('#loading').hide();
+
+    const url = new URL(window.location.href);
+    const urlParams = new URLSearchParams(url.search);
+
+    urlParams.set('tag', tag);
+    url.search = urlParams.toString();
+
+    window.location.assign(url);
+
+    // cats = [];
+    // jQuery('#loading').show();
+    // lastid = loadPosts(tag, null);
+    // jQuery('#loading').hide();
   });
 
 	$(window).scroll(function () {
